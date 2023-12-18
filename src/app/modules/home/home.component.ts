@@ -20,7 +20,11 @@ export class HomeComponent {
   })
   constructor(private formBuilder: FormBuilder){}
 
-  onSubmitLoginForm(): void{
+  onSubmitLogin(): void{
     console.log("Dados:", this.loginForm.value)
+  }
+
+  onSubmitSignUp(): void{
+    console.log("Dados:", this.signUpForm.value)
   }
 }
