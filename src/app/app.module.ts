@@ -12,6 +12,7 @@ import {ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
 import {RippleModule} from "primeng/ripple";
 import {CookieService} from "ngx-cookie-service";
+import {MessageService} from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import {CookieService} from "ngx-cookie-service";
     RippleModule,
     FormsModule
   ],
-  providers: [CookieService],
+  providers: [CookieService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
