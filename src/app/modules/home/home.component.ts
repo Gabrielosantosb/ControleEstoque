@@ -30,6 +30,7 @@ export class HomeComponent {
   clearErrorMessage(): void {
     this.errorMessage = "";
   }
+
   onSubmitLogin(): void {
 
     if (this.loginForm.valid) {
