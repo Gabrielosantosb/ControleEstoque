@@ -2,11 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from "./modules/home/home.component";
 import {DashboardHomeComponent} from "./modules/dashboard/page/dashboard-home/dashboard-home.component";
+import {AuthGuardService} from "./guards/auth-guard.service";
 
 const routes: Routes = [
   {
     path : "",
-    component: HomeComponent,
+    redirectTo:"dashboard",
+    pathMatch:"full"
+    // path : "",
+    // component: HomeComponent,
   },
   {
     path : "home",
@@ -14,7 +18,9 @@ const routes: Routes = [
   },
   {
     path : "dashboard",
-    component: DashboardHomeComponent,
+    loadChildren: ()=> import('./modules/dashboard/dashboard.module')
+      .then((m)=> m.DashboardModule),
+    canActivate:[AuthGuardService]
   }
 ];
 

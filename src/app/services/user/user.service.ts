@@ -6,14 +6,21 @@ import {Observable} from "rxjs";
 import {SignUpUserResponse} from "../../../models/interfaces/user/SignUpUserResponse";
 import {AuthRequest} from "../../../models/interfaces/auth/AuthRequest";
 import {AuthResponse} from "../../../models/interfaces/auth/AuthResponse";
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private API_URL = environments.API_URL
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
+
+  isLoggedIn():boolean{
+    // Se o usuario possui um token ou cookie
+    const token = this.cookieService.get('USER_INFO');
+    return token ? true : false;
+  }
   signupUser (requestData: SignUpUserRequest): Observable<SignUpUserResponse>
   {
     return this.http.post<SignUpUserResponse>(
