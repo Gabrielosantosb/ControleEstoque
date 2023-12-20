@@ -13,7 +13,7 @@ import {ProductsDataTransferService} from "../../../../shared/shared/products/pr
 export class DashboardHomeComponent implements OnInit {
   public productsList: Array<GetAllProductsResponse> = []
 
-  constructor(private productsService: ProductsService, private messageService: MessageService, private productsDataSerivce: ProductsDataTransferService) {
+  constructor(private productsService: ProductsService, private messageService: MessageService, private productsDataService: ProductsDataTransferService) {
   }
 
   ngOnInit(): void {
@@ -25,7 +25,7 @@ export class DashboardHomeComponent implements OnInit {
       next: (response) => {
         if (response.length > 0) {
           this.productsList = response;
-          this.productsDataSerivce.setProductsDatas(this.productsList)
+          this.productsDataService.setProductsDatas(this.productsList)
         }
       },
       error: (err) => {

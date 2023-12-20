@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { UserService } from "../../services/user/user.service";
 import { AuthRequest } from "../../../models/interfaces/auth/AuthRequest";
 import { SignUpUserRequest } from "../../../models/interfaces/user/SignUpUserRequest";
-import { tap } from "rxjs";
+import {Subject, takeUntil, tap} from "rxjs";
 import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
@@ -13,9 +13,10 @@ import {Router} from "@angular/router";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy{
   loginCard = true;
   errorMessage = "";
+  private destroy$ = new Subject<void>();
 
   loginForm = this.formBuilder.group({
     email: ["", [Validators.required, Validators.email]],
@@ -41,6 +42,7 @@ export class HomeComponent {
   onSubmitLogin(): void {
     if (this.loginForm.valid) {
       this.userService.authUser(this.loginForm.value as AuthRequest).pipe(
+        takeUntil(this.destroy$),
         tap(
           (response) => {
             if (response) {
@@ -76,6 +78,7 @@ export class HomeComponent {
   onSubmitSignUp(): void {
     if (this.signUpForm.valid) {
       this.userService.signupUser(this.signUpForm.value as SignUpUserRequest).pipe(
+        takeUntil(this.destroy$),
         tap(
           (response) => {
             if (response) {
@@ -104,5 +107,9 @@ export class HomeComponent {
     } else {
       this.errorMessage = "Por favor, corrija os campos destacados.";
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
