@@ -170,3 +170,13 @@
     width: 50%;
   }
 }
+
+.custom-confirm-dialog .ui-dialog-footer button.ui-button.accept-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.custom-confirm-dialog .ui-dialog-footer button.ui-button.reject-button {
+  background-color: #dc3545;
+  color: #fff;
+}

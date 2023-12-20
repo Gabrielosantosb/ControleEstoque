@@ -12,7 +12,8 @@ import {ButtonModule} from "primeng/button";
 import {ToastModule} from "primeng/toast";
 import {RippleModule} from "primeng/ripple";
 import {CookieService} from "ngx-cookie-service";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -30,9 +31,11 @@ import {MessageService} from "primeng/api";
     ButtonModule,
     ToastModule,
     RippleModule,
-    FormsModule
+    FormsModule,
+    ConfirmDialogModule
+
   ],
-  providers: [CookieService, MessageService],
+  providers: [CookieService, MessageService,ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
