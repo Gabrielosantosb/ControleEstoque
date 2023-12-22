@@ -35,6 +35,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     const productsLoaded = this.productsDataService.getProductsData();
     if (productsLoaded.length > 0) this.productsData = productsLoaded;
     this.getAPIProductData()
+
   }
 
   private getAPIProductData() {
