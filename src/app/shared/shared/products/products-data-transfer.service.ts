@@ -16,7 +16,7 @@ export class ProductsDataTransferService {
 
   }
 
-  private getProductsData() {
+  public getProductsData() {
     this.productsDataEmiter$
       .pipe(
         take(1),
