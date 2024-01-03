@@ -4,6 +4,7 @@ import {CookieService} from "ngx-cookie-service";
 import {environments} from "../../../environments/environments";
 import {map, Observable} from "rxjs";
 import {GetAllProductsResponse} from "./response/GetAllProductsResponse";
+import {DeleteProductResponse} from "./response/DeleteProductResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -27,4 +28,10 @@ export class ProductsService {
     )
   }
 
-}
+  deleteProduct(product_id: string): Observable<DeleteProductResponse> {
+    return this.http.delete<DeleteProductResponse>(`${this.API_URL}/product/delete`, {...this.httpOptions, params:{
+      product_id: product_id
+      }});
+  }
+
+  }
