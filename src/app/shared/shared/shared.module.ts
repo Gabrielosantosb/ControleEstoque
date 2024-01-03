@@ -8,24 +8,30 @@ import {ButtonModule} from "primeng/button";
 import {DialogService} from "primeng/dynamicdialog";
 import { ToolbarNavigationComponent } from './components/toolbar-navigation/toolbar-navigation.component';
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import { ProductFormComponent } from './components/product-form/product-form.component';
+import {InputTextModule} from "primeng/inputtext";
+import {DropdownModule} from "primeng/dropdown";
 
 
 
 @NgModule({
   declarations: [
-    ToolbarNavigationComponent
+    ToolbarNavigationComponent,
+    ProductFormComponent
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterModule,
-        // PrimeNg
-        ToolbarModule,
-        CardModule,
-        ButtonModule,
-        ConfirmDialogModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    // PrimeNg
+    ToolbarModule,
+    CardModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    InputTextModule,
+    DropdownModule
+  ],
   exports: [
     ToolbarNavigationComponent
   ],

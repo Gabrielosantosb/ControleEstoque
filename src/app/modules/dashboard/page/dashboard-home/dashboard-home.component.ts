@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ProductsService} from "../../../../../models/interfaces/products/products.service";
+import {ProductsService} from "../../../../services/products/products.service";
 import {MessageService} from "primeng/api";
 import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
 import {error} from "@angular/compiler-cli/src/transformers/util";

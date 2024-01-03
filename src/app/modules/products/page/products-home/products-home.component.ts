@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
-import {ProductsService} from "../../../../../models/interfaces/products/products.service";
+import {ProductsService} from "../../../../services/products/products.service";
 import {ProductsDataTransferService} from "../../../../shared/shared/products/products-data-transfer.service";
 import {Router} from "@angular/router";
 import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
@@ -23,22 +23,14 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
               private messageService: MessageService,
               private confirmationService: ConfirmationService) {
   }
-
   ngOnInit(): void {
     this.getProductData()
-  }
-
-
-  ngOnDestroy(): void {
-    this.destroy$.next()
-    this.destroy$.complete()
   }
 
   private getProductData() {
     const productsLoaded = this.productsDataService.getProductsData();
     if (productsLoaded.length > 0) this.productsData = productsLoaded;
     this.getAPIProductData()
-
   }
 
   private getAPIProductData() {
@@ -63,7 +55,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     if (event) console.log("Evento Recebido aqui", event)
 
   }
-
   handleDeleteAction(event: { product_id: string, productName: string }): void {
     if (event) {
       this.confirmationService.confirm({
@@ -77,7 +68,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         }
       })
     }
-
   }
 
   private deleteProduct(product_id: string): void {
@@ -104,5 +94,9 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
           });
         }
       });
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 }

@@ -3,8 +3,10 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CookieService} from "ngx-cookie-service";
 import {environments} from "../../../environments/environments";
 import {map, Observable} from "rxjs";
-import {GetAllProductsResponse} from "./response/GetAllProductsResponse";
-import {DeleteProductResponse} from "./response/DeleteProductResponse";
+import {GetAllProductsResponse} from "../../../models/interfaces/products/response/GetAllProductsResponse";
+import {DeleteProductResponse} from "../../../models/interfaces/products/response/DeleteProductResponse";
+import {CreateProductRequest} from "../../../models/interfaces/products/request/CreateProductRequest";
+import {CreateProductResponse} from "../../../models/interfaces/products/response/CreateProductResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +35,8 @@ export class ProductsService {
       product_id: product_id
       }});
   }
+  createProduct(requestData: CreateProductRequest):Observable<CreateProductResponse>{
+    return this.http.post<CreateProductResponse>(`${this.API_URL}/product`, requestData, this.httpOptions)
 
   }
+}
