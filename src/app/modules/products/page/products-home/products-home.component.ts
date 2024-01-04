@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {ProductFormComponent} from "../../../../shared/shared/components/product-form/product-form.component";
 
 @Component({
   selector: 'app-products-home',
@@ -14,6 +16,7 @@ import {EventAction} from "../../../../../models/interfaces/products/event/Event
 })
 export class ProductsHomeComponent implements OnDestroy, OnInit {
   public productsData: Array<GetAllProductsResponse> = []
+  private ref!: DynamicDialogRef;
   private readonly destroy$: Subject<void> = new Subject()
 
 
@@ -21,8 +24,10 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
               private productsDataService: ProductsDataTransferService,
               private router: Router,
               private messageService: MessageService,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private dialogService: DialogService) {
   }
+
   ngOnInit(): void {
     this.getProductData()
   }
@@ -52,9 +57,27 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
   }
 
   handleProductAction(event: EventAction): void {
-    if (event) console.log("Evento Recebido aqui", event)
+    if (event) {
+      this.ref = this.dialogService.open(ProductFormComponent, {
+        header: event?.action,
+        width: '70%',
+        contentStyle:{overflow:'auto'},
+        maximizable: true,
+        data:{
+          event: event,
+          productsDatas: this.productsData
+        },
+      });
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next:() =>{
+          this.getAPIProductData()
+        }
+      })
+    }
+
 
   }
+
   handleDeleteAction(event: { product_id: string, productName: string }): void {
     if (event) {
       this.confirmationService.confirm({
@@ -95,6 +118,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         }
       });
   }
+
   ngOnDestroy(): void {
     this.destroy$.next()
     this.destroy$.complete()

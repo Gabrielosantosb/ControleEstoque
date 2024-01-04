@@ -1,9 +1,8 @@
-<p>product-form works!</p>
+
 <!--FORMULARIO ADD PRODUTO-->
 <div>
 <!--  Nome produto-->
-  <form [formGroup]="addProductForm" >
-<!--        (ngSubmit)="handleSubmitAddProduct()">-->
+  <form [formGroup]="addProductForm" (ngSubmit)="handleSubmitAddProduct()">
     <div class="card flex flex-column md:flex-column gap-3">
       <input pInputText
              placeholder="Nome"

@@ -45,7 +45,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     })
   }
 
-  private handleSubmitAddProduct() {
+  public handleSubmitAddProduct() {
     if (this.addProductForm?.value && this.addProductForm?.valid) {
       const requestCreateProduct: CreateProductRequest =
         {
