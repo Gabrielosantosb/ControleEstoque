@@ -26,10 +26,10 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   public productSelectedDatas!: GetAllProductsResponse
   public productAction !: {
     event: EventAction;
-    productsData: Array<GetAllProductsResponse>;
+    productData: Array<GetAllProductsResponse>;
   }
   public selectedCategory: { name: string, code: string }[] = [];
-  public productsData: Array<GetAllProductsResponse> = []
+  public productsDatas: Array<GetAllProductsResponse> = [];
   public addProductForm = this.formBuilder.group({
     name: ["", Validators.required],
     price: ["", Validators.required],
@@ -51,11 +51,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.productAction = this.ref.data;
-    if (this.productAction?.event?.action === this.editProductAction && this.productAction?.productsData) this.getProductSelectedDatas(this.productAction?.event?.id as string)
-    if (this.productAction?.event?.action === this.saleProductAction) this.getProductsDatas()
-    this.getProductsDatas()
-    this.getAllCategories()
-
+    if (this.productAction?.event?.action === this.editProductAction && this.productAction?.productData)  this.getProductSelectedDatas(this.productAction?.event?.id as string);
+    this.productAction?.event?.action === this.saleProductAction && this.getProductDatas();
+    this.getAllCategories();
   }
 
   constructor(private categoriesService: CategoriesService,
@@ -150,7 +148,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
 
   public getProductSelectedDatas(product_id: string) {
-    const allProducts = this.productAction?.productsData;
+    const allProducts = this.productAction?.productData;
     if (allProducts?.length > 0) {
       const productFiltered = allProducts?.filter(
         (element) => element?.id === product_id)
@@ -168,18 +166,19 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProductsDatas() {
-    this.productsService.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe(
-      {
+  getProductDatas(): void {
+    this.productsService
+      .getAllProducts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
         next: (response) => {
-          console.log('Aqui', response)
           if (response.length > 0) {
-            this.productsData = response
-            this.productsData && this.productsDataService.setProductsDatas(this.productsData)
+            this.productsDatas = response;
+            this.productsDatas &&
+            this.productsDataService.setProductsDatas(this.productsDatas);
           }
-        }
-      }
-    )
+        },
+      });
   }
 
   ngOnDestroy(): void {

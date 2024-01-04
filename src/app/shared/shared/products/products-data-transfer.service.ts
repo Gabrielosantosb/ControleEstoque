@@ -7,26 +7,27 @@ import {GetAllProductsResponse} from "../../../../models/interfaces/products/res
 })
 export class ProductsDataTransferService {
   // Dolar Quando retorna um observable
-  public productsDataEmiter$ = new BehaviorSubject<Array<GetAllProductsResponse> | null>(null)
-  public productsData: Array<GetAllProductsResponse> = [];
+  public productsDataEmitter$ =
+    new BehaviorSubject<Array<GetAllProductsResponse> | null>(null);
+  public productsDatas: Array<GetAllProductsResponse> = [];
 
   setProductsDatas(products: Array<GetAllProductsResponse>): void {
-    if (products) this.productsDataEmiter$.next(products)
+    if (products) this.productsDataEmitter$.next(products)
     this.getProductsData()
 
   }
 
   public getProductsData() {
-    this.productsDataEmiter$
+    this.productsDataEmitter$
       .pipe(
         take(1),
         map((data) => data?.filter((product) => product.amount > 0))
       )
       .subscribe({
         next: (response) => {
-          if (response) this.productsData = response;
+          if (response) this.productsDatas = response;
         }
       });
-    return this.productsData;
+    return this.productsDatas;
   }
 }
