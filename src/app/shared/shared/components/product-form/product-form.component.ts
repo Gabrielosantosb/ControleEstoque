@@ -12,6 +12,8 @@ import {EventAction} from "../../../../../models/interfaces/products/event/Event
 import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
 import {elements} from "chart.js";
 import {ProductsDataTransferService} from "../../products/products-data-transfer.service";
+import {ProductEvent} from "../../../../modules/products/enums/products/ProductEvent.js";
+import {EditProductRequest} from "../../../../../models/interfaces/products/request/EditProductRequest";
 
 @Component({
   selector: 'app-product-form',
@@ -36,6 +38,10 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     amount: [0, Validators.required]
   })
 
+  public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
+  public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
+  public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT;
+
   public editProductForm = this.formBuilder.group({
     name: ["", Validators.required],
     price: ["", Validators.required],
@@ -45,7 +51,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.productAction = this.ref.data;
+    if (this.productAction?.event?.action === this.editProductAction && this.productAction?.productsData) this.getProductSelectedDatas(this.productAction?.event?.id as string)
+    if (this.productAction?.event?.action === this.saleProductAction) this.getProductsDatas()
+    this.getProductsDatas()
     this.getAllCategories()
+
   }
 
   constructor(private categoriesService: CategoriesService,
@@ -57,13 +67,16 @@ export class ProductFormComponent implements OnInit, OnDestroy {
               public ref: DynamicDialogConfig
   ) {
   }
-
   private getAllCategories() {
     this.categoriesService.getAllCategories().pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
         if (response.length > 0) this.categoriesDatas = response
       }
     })
+  }
+  private getProductId(product_id: string){
+
+
   }
 
   public handleSubmitAddProduct() {
@@ -101,9 +114,40 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public handletEditProduct() {
-    // if(this.editProcutsForm.value && this.editProcutsForm.valid){}
+  public handleEditProduct() {
+
+    if (this.editProductForm.value && this.editProductForm.valid && this.productAction.event.id) {
+      const requestEditProduct: EditProductRequest = {
+        name: String(this.editProductForm.value.name),
+        price: String(this.editProductForm.value.price),
+        description: String(this.editProductForm.value.description),
+        product_id: String(this.productAction.event.id),
+        amount: Number(this.editProductForm.value.amount),
+      };
+
+
+      this.productsService.editProduct(requestEditProduct).pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: "success",
+            summary: "Sucesso",
+            detail: "Produto editado com sucesso",
+            life: 2000
+          });
+          this.editProductForm.reset();
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: "error",
+            summary: "Erro",
+            detail: "Erro ao editar produto",
+            life: 2000
+          });
+        }
+      });
+    }
   }
+
 
   public getProductSelectedDatas(product_id: string) {
     const allProducts = this.productAction?.productsData;
@@ -114,11 +158,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         this.productSelectedDatas = productFiltered[0];
 
         this.editProductForm.setValue({
-          name: this.productSelectedDatas?.name,
-          price: this.productSelectedDatas?.price,
-          description: this.productSelectedDatas?.description,
-          amount: this.productSelectedDatas?.amount,
-        })
+            name: this.productSelectedDatas?.name,
+            price: this.productSelectedDatas?.price,
+            description: this.productSelectedDatas?.description,
+            amount: this.productSelectedDatas?.amount,
+          }
+        )
       }
     }
   }
@@ -126,8 +171,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   getProductsDatas() {
     this.productsService.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe(
       {
-        next:(response) =>{
-          if(response.length > 0){
+        next: (response) => {
+          console.log('Aqui', response)
+          if (response.length > 0) {
             this.productsData = response
             this.productsData && this.productsDataService.setProductsDatas(this.productsData)
           }
