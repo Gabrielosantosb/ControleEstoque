@@ -11,6 +11,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import { ProductFormComponent } from './components/product-form/product-form.component';
 import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 
 
@@ -19,19 +20,20 @@ import {DropdownModule} from "primeng/dropdown";
     ToolbarNavigationComponent,
     ProductFormComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    // PrimeNg
-    ToolbarModule,
-    CardModule,
-    ButtonModule,
-    ConfirmDialogModule,
-    InputTextModule,
-    DropdownModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        // PrimeNg
+        ToolbarModule,
+        CardModule,
+        ButtonModule,
+        ConfirmDialogModule,
+        InputTextModule,
+        DropdownModule,
+        InputTextareaModule
+    ],
   exports: [
     ToolbarNavigationComponent
   ],
