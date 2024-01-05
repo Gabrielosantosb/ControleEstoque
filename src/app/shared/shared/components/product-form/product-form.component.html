@@ -42,7 +42,7 @@
 
 <!--FORMULARIO EDITAR PRODUTO-->
 <div *ngIf="productAction?.event?.action === editProductAction">
-  <form [formGroup]="editProductForm" (ngSubmit)="handleEditProduct()">
+  <form [formGroup]="editProductForm" (ngSubmit)="handleSubmitEditProduct()">
     <div class="card flex flex-column md:flex-column gap-3">
       <input pInputText placeholder="Nome" formControlName="name" />
       <input pInputText placeholder="Preço" formControlName="price" />

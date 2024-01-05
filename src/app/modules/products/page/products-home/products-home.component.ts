@@ -15,45 +15,52 @@ import {ProductFormComponent} from "../../../../shared/shared/components/product
   styleUrls: []
 })
 export class ProductsHomeComponent implements OnDestroy, OnInit {
-  public productsData: Array<GetAllProductsResponse> = []
+  private readonly destroy$: Subject<void> = new Subject();
   private ref!: DynamicDialogRef;
-  private readonly destroy$: Subject<void> = new Subject()
+  public productsDatas: Array<GetAllProductsResponse> = [];
 
-
-  constructor(private productsService: ProductsService,
-              private productsDataService: ProductsDataTransferService,
-              private router: Router,
-              private messageService: MessageService,
-              private confirmationService: ConfirmationService,
-              private dialogService: DialogService) {
-  }
+  constructor(
+    private productsService: ProductsService,
+    private productsDtService: ProductsDataTransferService,
+    private router: Router,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private dialogService: DialogService
+  ) {}
 
   ngOnInit(): void {
-    this.getProductData()
+    this.getServiceProductsDatas();
   }
 
-  private getProductData() {
-    const productsLoaded = this.productsDataService.getProductsData();
-    if (productsLoaded.length > 0) this.productsData = productsLoaded;
-    this.getAPIProductData()
+  getServiceProductsDatas() {
+    const productsLoaded = this.productsDtService.getProductsData();
+
+    if (productsLoaded.length > 0) {
+      this.productsDatas = productsLoaded;
+    } else this.getAPIProductsDatas();
   }
 
-  private getAPIProductData() {
-    this.productsService.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe({
-      next: ((response) => {
-        if (response.length > 0) this.productsData = response
-      }),
-      error: ((err) => {
-        console.log(err)
-        this.messageService.add({
-          severity: "error",
-          summary: "Erro",
-          detail: "Erro ao buscar produtos",
-          life: 2000
-        })
-        this.router.navigate(['/dashboard'])
-      })
-    })
+  getAPIProductsDatas() {
+    this.productsService
+      .getAllProducts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.length > 0) {
+            this.productsDatas = response;
+          }
+        },
+        error: (err) => {
+          console.log(err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Erro ao buscar produtos',
+            life: 2500,
+          });
+          this.router.navigate(['/dashboard']);
+        },
+      });
   }
 
   handleProductAction(event: EventAction): void {
@@ -61,66 +68,70 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
       this.ref = this.dialogService.open(ProductFormComponent, {
         header: event?.action,
         width: '70%',
-        contentStyle:{overflow:'auto'},
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
         maximizable: true,
-        data:{
+        data: {
           event: event,
-          productsDatas: this.productsData
+          productDatas: this.productsDatas,
         },
       });
       this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
-        next:() =>{
-          this.getAPIProductData()
-        }
-      })
+        next: () => this.getAPIProductsDatas(),
+      });
     }
-
-
   }
 
-  handleDeleteAction(event: { product_id: string, productName: string }): void {
+  handleDeleteProductAction(event: {
+    product_id: string;
+    productName: string;
+  }): void {
     if (event) {
       this.confirmationService.confirm({
-        message: `Tem certeza que deseja excluir o produto: ${event?.productName}?`,
-        header: "Excluir produto",
-        icon: "pi pi-exclamation-triangle",
-        acceptLabel: "Sim",
-        rejectLabel: "Não",
-        accept: () => {
-          this.deleteProduct(event?.product_id)
-        }
-      })
+        message: `Confirma a exclusão do produto: ${event?.productName}?`,
+        header: 'Confirmação de exclusão',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Sim',
+        rejectLabel: 'Não',
+        accept: () => this.deleteProduct(event?.product_id),
+      });
     }
   }
 
-  private deleteProduct(product_id: string): void {
-    this.productsService.deleteProduct(product_id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          if (response) {
+  deleteProduct(product_id: string) {
+    if (product_id) {
+      this.productsService
+        .deleteProduct(product_id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            if (response) {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: 'Produto removido com sucesso!',
+                life: 2500,
+              });
+
+              this.getAPIProductsDatas();
+            }
+          },
+          error: (err) => {
+            console.log(err);
             this.messageService.add({
-              severity: 'success',
-              summary: 'Sucesso',
-              detail: 'Produto Removido!',
-              life: 2000
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Erro ao remover produto!',
+              life: 2500,
             });
-            this.getAPIProductData();
-          }
-        },
-        error: () => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Erro ao deletar produto',
-            life: 2000
-          });
-        }
-      });
+          },
+        });
+    }
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next()
-    this.destroy$.complete()
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
+
