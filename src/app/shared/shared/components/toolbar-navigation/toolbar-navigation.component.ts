@@ -16,6 +16,9 @@ export class ToolbarNavigationComponent {
   logout(): void {
     this.confirmationService.confirm({
       message: "Tem certeza que deseja sair?",
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
       accept: () => {
         this.cookie.delete("USER_INFO")
         void this.router.navigate(["/home"])

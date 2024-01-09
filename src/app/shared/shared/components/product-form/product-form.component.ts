@@ -42,11 +42,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     price: ['', Validators.required],
     description: ['', Validators.required],
     amount: [0, Validators.required],
+    category_id: ['', Validators.required],
   });
 
   public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
   public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
   public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT;
+  public renderDropdown = false
 
   constructor(
     private categoriesService: CategoriesService,
@@ -56,22 +58,15 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private router: Router,
     public ref: DynamicDialogConfig
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.productAction = this.ref.data;
-    console.log(this.productAction?.productDatas)
-
-    if (
-      this.productAction?.event?.action === this.editProductAction &&   this.productAction?.productDatas
-    ) {
-      this.getProductSelectedDatas(this.productAction?.event?.id as string);
-    }
-
-    this.productAction?.event?.action === this.saleProductAction &&
-    this.getProductDatas();
+    this.productAction?.event?.action === this.saleProductAction && this.getProductDatas();
 
     this.getAllCategories();
+    this.renderDropdown = true
   }
 
   getAllCategories(): void {
@@ -82,6 +77,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response.length > 0) {
             this.categoriesDatas = response;
+            if ( this.productAction?.event?.action === this.editProductAction && this.productAction?.productDatas) {
+              this.getProductSelectedDatas(this.productAction?.event?.id as string);
+            }
           }
         },
       });
@@ -133,11 +131,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       this.productAction.event.id
     ) {
       const requestEditProduct: EditProductRequest = {
-        name: this.editProductForm.value.name as string,
-        price: this.editProductForm.value.price as string,
-        description: this.editProductForm.value.description as string,
+        name: String(this.editProductForm.value.name),
+        price: String(this.editProductForm.value.price),
+        description: String(this.editProductForm.value.description as string),
         product_id: this.productAction?.event?.id,
-        amount: this.editProductForm.value.amount as number,
+        amount: Number(this.editProductForm.value.amount),
+        category_id: String(this.editProductForm.value.category_id)
       };
 
       this.productsService
@@ -184,6 +183,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
           price: this.productSelectedDatas?.price,
           amount: this.productSelectedDatas?.amount,
           description: this.productSelectedDatas?.description,
+          category_id: this.productSelectedDatas?.category.id
         });
       }
     }
