@@ -12,12 +12,12 @@ import {DeleteCategory} from "../../../../../models/interfaces/categories/event/
 export class CategoriesTableComponent {
   @Input() public categories : Array<GetCategoriesResponse> = []
   @Output() public categoryEvent = new EventEmitter<EditCategoryAction>()
-  @Output() public deleteCategory = new EventEmitter<DeleteCategory>()
+  @Output() public deleteCategoryEvent = new EventEmitter<DeleteCategory>()
   public categorySelected!: GetCategoriesResponse
   public addCategoryAction = CategoryEvent.ADD_CATEGORY_ACTION
   public editCategoryAction = CategoryEvent.EDIT_CATEGORY_ACTION
 
-  handleDeleteCategory(category_id: string, categoryName: string){
-    if(category_id !== '' && categoryName !== '') this.deleteCategory.emit({category_id,  categoryName})
+  handleDeleteCategoryEvent(category_id: string, categoryName: string){
+    if(category_id !== '' && categoryName !== '') this.deleteCategoryEvent.emit({category_id,  categoryName})
   }
 }

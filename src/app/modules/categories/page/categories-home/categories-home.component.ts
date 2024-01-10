@@ -46,10 +46,11 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteCategory(event: DeleteCategory):void{
-    if(event) this.confirmationModal.confirmDelete(`Deseja excluir a categoria ${event.categoryName}?`, () => this.deleteCategory(event.category_id));
+    if(event) this.confirmationModal.confirmDelete(`Deseja excluir a categoria ${event.categoryName}?`, () => this.deleteCategory(event?.category_id));
   }
 
   deleteCategory(category_id: string): void {
+    console.log('aqui', category_id)
     if (category_id) {
       this.categoriesService.deleteCategory({ category_id }).pipe(takeUntil(this.destroy$)).subscribe({
         next: (response) => {
