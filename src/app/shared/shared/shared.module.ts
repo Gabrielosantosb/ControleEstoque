@@ -12,13 +12,15 @@ import { ProductFormComponent } from './components/product-form/product-form.com
 import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {ConfirmationService, MessageService} from "primeng/api";
+
 
 
 
 @NgModule({
   declarations: [
     ToolbarNavigationComponent,
-    ProductFormComponent
+    ProductFormComponent,
   ],
     imports: [
         CommonModule,

@@ -14,11 +14,13 @@ import {RippleModule} from "primeng/ripple";
 import {CookieService} from "ngx-cookie-service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import { ToolTipComponent } from './shared/shared/components/tool-tip/tool-tip.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    ToolTipComponent
   ],
   imports: [
     BrowserModule,

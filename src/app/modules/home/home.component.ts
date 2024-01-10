@@ -1,19 +1,23 @@
 import {Component, OnDestroy} from '@angular/core';
-import { FormBuilder, Validators } from "@angular/forms";
-import { UserService } from "../../services/user/user.service";
-import { AuthRequest } from "../../../models/interfaces/auth/AuthRequest";
-import { SignUpUserRequest } from "../../../models/interfaces/user/SignUpUserRequest";
+import {FormBuilder, Validators} from "@angular/forms";
+import {UserService} from "../../services/user/user.service";
+import {AuthRequest} from "../../../models/interfaces/auth/AuthRequest";
+import {SignUpUserRequest} from "../../../models/interfaces/user/SignUpUserRequest";
 import {Subject, takeUntil, tap} from "rxjs";
 import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
+import {environments} from "../../../environments/environments";
+import {ToolTipComponent} from "../../shared/shared/components/tool-tip/tool-tip.component";
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [ToolTipComponent]
 })
-export class HomeComponent implements OnDestroy{
+export class HomeComponent implements OnDestroy {
   loginCard = true;
   errorMessage = "";
   private destroy$ = new Subject<void>();
@@ -28,12 +32,15 @@ export class HomeComponent implements OnDestroy{
     email: ["", [Validators.required, Validators.email]],
     password: ["", [Validators.required, Validators.minLength(6)]]
   });
+  private readonly USER_AUTH = environments.COOKIES_VALUE.user_auth;
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService,
               private cookieService: CookieService,
               private messageService: MessageService,
-              private router: Router) {}
+              private router: Router,
+              private toolTip: ToolTipComponent) {
+  }
 
   clearErrorMessage(): void {
     this.errorMessage = "";
@@ -46,27 +53,17 @@ export class HomeComponent implements OnDestroy{
         tap(
           (response) => {
             if (response) {
-              this.cookieService.set("USER_INFO", response?.token)
+              this.cookieService.set(this.USER_AUTH, response?.token)
               this.errorMessage = "";
               this.loginForm.reset();
               this.router.navigate(["/dashboard"])
-              this.messageService.add({
-                severity: "success",
-                summary: "Tudo certo!",
-                detail: `Seja bem vindo ${response.name}`,
-                life: 2000
-              })
+              this.toolTip.SuccessMessage(`Seja bem vindo ${response.name}`)
             }
           }
         )
       ).subscribe({
         error: (err) => {
-          this.messageService.add({
-            severity: "error",
-            summary: "Erro",
-            detail: `Erro ao efetuar login`,
-            life: 2000
-          })
+          this.toolTip.ErrorMessage('Erro ao efetuar login')
           console.log(err);
         }
       });
@@ -84,23 +81,13 @@ export class HomeComponent implements OnDestroy{
             if (response) {
               this.signUpForm.reset();
               this.loginCard = true;
-              this.messageService.add({
-                severity: "success",
-                summary: "Tudo certo!",
-                detail: `Usuário criado com sucesso!`,
-                life: 2000
-              })
+              this.toolTip.SuccessMessage(`Usuário criado com sucesso!`)
             }
           }
         )
       ).subscribe({
         error: (err) => {
-          this.messageService.add({
-            severity: "error",
-            summary: "Erro",
-            detail: `Erro ao efetuar o cadastro`,
-            life: 2000
-          })
+          this.toolTip.ErrorMessage(`Erro ao efetuar cadastro`)
           console.log(err);
         }
       });
@@ -108,8 +95,14 @@ export class HomeComponent implements OnDestroy{
       this.errorMessage = "Por favor, corrija os campos destacados.";
     }
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private openToast(sucess: boolean, title: string, details: string): void {
+    if (sucess)
+      this.toolTip.SuccessMessage(`Usuário criado com sucesso!`)
   }
 }

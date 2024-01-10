@@ -6,11 +6,13 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 import {ProductsDataTransferService} from "../../../../shared/shared/products/products-data-transfer.service";
 import {Subject, takeUntil} from "rxjs";
 import {ChartData, ChartOptions} from "chart.js";
+import {ToolTipComponent} from "../../../../shared/shared/components/tool-tip/tool-tip.component";
 
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
-  styleUrls: []
+  styleUrls: [],
+  providers: [ToolTipComponent]
 })
 export class DashboardHomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>()
@@ -18,7 +20,10 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   public productsChartData !: ChartData
   public productsChartOptions!: ChartOptions
 
-  constructor(private productsService: ProductsService, private messageService: MessageService, private productsDataService: ProductsDataTransferService) {
+  constructor(private productsService: ProductsService,
+              private messageService: MessageService,
+              private productsDataService: ProductsDataTransferService,
+              private toolTip: ToolTipComponent) {
   }
 
   ngOnInit(): void {
@@ -38,12 +43,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.log(err);
-          this.messageService.add({
-            severity: "error",
-            summary: "Erro",
-            detail: "Erro ao buscar produtos",
-            life: 2000
-          });
+          this.toolTip.ErrorMessage("Erro ao buscar produtos")
         }
       });
   }
@@ -69,15 +69,18 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
       this.productsChartOptions = {
         maintainAspectRatio: false,
         aspectRatio: 0.8,
-        plugins: { legend: { labels: { color: textColor } } },
-        scales: { x: this.createAxisConfig(textColorSecondary, surfaceBorder), y: this.createAxisConfig(textColorSecondary, surfaceBorder) }
+        plugins: {legend: {labels: {color: textColor}}},
+        scales: {
+          x: this.createAxisConfig(textColorSecondary, surfaceBorder),
+          y: this.createAxisConfig(textColorSecondary, surfaceBorder)
+        }
       };
 
     }
   }
 
   private createAxisConfig(tickColor: string, gridColor: string) {
-    return { ticks: { color: tickColor, font: { weight: 500 } }, grid: { color: gridColor } };
+    return {ticks: {color: tickColor, font: {weight: 500}}, grid: {color: gridColor}};
   }
 
   ngOnDestroy(): void {

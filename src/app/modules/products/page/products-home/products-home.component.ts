@@ -8,11 +8,13 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ProductFormComponent} from "../../../../shared/shared/components/product-form/product-form.component";
+import {ToolTipComponent} from "../../../../shared/shared/components/tool-tip/tool-tip.component";
 
 @Component({
   selector: 'app-products-home',
   templateUrl: './products-home.component.html',
-  styleUrls: []
+  styleUrls: [],
+  providers: [ToolTipComponent]
 })
 export class ProductsHomeComponent implements OnDestroy, OnInit {
   private readonly destroy$: Subject<void> = new Subject();
@@ -23,9 +25,9 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     private productsService: ProductsService,
     private productsDtService: ProductsDataTransferService,
     private router: Router,
-    private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private toolTip : ToolTipComponent
   ) {}
 
   ngOnInit(): void {
@@ -52,12 +54,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         },
         error: (err) => {
           console.log(err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Erro ao buscar produtos',
-            life: 2500,
-          });
+        this.toolTip.ErrorMessage("Erro ao buscar produtos")
           this.router.navigate(['/dashboard']);
         },
       });
@@ -106,24 +103,13 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         .subscribe({
           next: (response) => {
             if (response) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Sucesso',
-                detail: 'Produto removido com sucesso!',
-                life: 2500,
-              });
-
+              this.toolTip.SuccessMessage('Produto removido com sucesso!')
               this.getAPIProductsDatas();
             }
           },
           error: (err) => {
             console.log(err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erro',
-              detail: 'Erro ao remover produto!',
-              life: 2500,
-            });
+            this.toolTip.ErrorMessage('Erro ao remover produto!')
           },
         });
     }

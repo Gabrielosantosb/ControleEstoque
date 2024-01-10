@@ -14,11 +14,13 @@ import {elements} from "chart.js";
 import {ProductsDataTransferService} from "../../products/products-data-transfer.service";
 import {ProductEvent} from "../../../../modules/products/enums/products/ProductEvent.js";
 import {EditProductRequest} from "../../../../../models/interfaces/products/request/EditProductRequest";
+import {ToolTipComponent} from "../tool-tip/tool-tip.component";
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
-  styleUrls: []
+  styleUrls: [],
+  providers: [ToolTipComponent]
 })
 export class ProductFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
@@ -57,7 +59,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private router: Router,
-    public ref: DynamicDialogConfig
+    public ref: DynamicDialogConfig,
+    private toolTip: ToolTipComponent,
   ) {
   }
 
@@ -77,7 +80,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response.length > 0) {
             this.categoriesDatas = response;
-            if ( this.productAction?.event?.action === this.editProductAction && this.productAction?.productDatas) {
+            if (this.productAction?.event?.action === this.editProductAction && this.productAction?.productDatas) {
               this.getProductSelectedDatas(this.productAction?.event?.id as string);
             }
           }
@@ -101,22 +104,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (response) => {
             if (response) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Sucesso',
-                detail: 'Produto criado com sucesso!',
-                life: 2500,
-              });
+              this.toolTip.SuccessMessage('Produto criado com sucesso!')
             }
           },
           error: (err) => {
             console.log(err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erro',
-              detail: 'Erro ao criar produto!',
-              life: 2500,
-            });
+            this.toolTip.ErrorMessage('Erro ao criar produto!')
           },
         });
     }
@@ -144,22 +137,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Sucesso',
-              detail: 'Produto editado com sucesso!',
-              life: 2500,
-            });
+            this.toolTip.SuccessMessage('Produto editado com sucesso!')
             this.editProductForm.reset();
           },
           error: (err) => {
             console.log(err);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erro',
-              detail: 'Erro ao editar produto!',
-              life: 2500,
-            });
+            this.toolTip.ErrorMessage('Erro ao editar produto')
             this.editProductForm.reset();
           },
         });
