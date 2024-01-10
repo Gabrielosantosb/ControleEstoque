@@ -4,7 +4,7 @@ import { MessageService } from 'primeng/api';
 @Injectable({
   providedIn: 'root',
 })
-export class ToolTipService {
+export class ToastMessage {
   constructor(private messageService: MessageService) {}
 
   SuccessMessage(detail: string): void {

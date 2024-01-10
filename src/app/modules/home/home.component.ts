@@ -8,7 +8,7 @@ import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {environments} from "../../../environments/environments";
-import {ToolTipService} from "../../services/tool-tip/tool-tip";
+import {ToastMessage} from "../../services/toast-message/toast-message";
 
 
 
@@ -16,7 +16,7 @@ import {ToolTipService} from "../../services/tool-tip/tool-tip";
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [ToolTipService]
+  providers: [ToastMessage]
 })
 export class HomeComponent implements OnDestroy {
   loginCard = true;
@@ -40,7 +40,7 @@ export class HomeComponent implements OnDestroy {
               private cookieService: CookieService,
               private messageService: MessageService,
               private router: Router,
-              private toolTip: ToolTipService) {
+              private toastMessage: ToastMessage) {
   }
 
   clearErrorMessage(): void {
@@ -58,13 +58,13 @@ export class HomeComponent implements OnDestroy {
               this.errorMessage = "";
               this.loginForm.reset();
               this.router.navigate(["/dashboard"])
-              this.toolTip.SuccessMessage(`Seja bem vindo ${response.name}`)
+              this.toastMessage.SuccessMessage(`Seja bem vindo ${response.name}`)
             }
           }
         )
       ).subscribe({
         error: (err) => {
-          this.toolTip.ErrorMessage('Erro ao efetuar login')
+          this.toastMessage.ErrorMessage('Erro ao efetuar login')
           console.log(err);
         }
       });
@@ -82,13 +82,13 @@ export class HomeComponent implements OnDestroy {
             if (response) {
               this.signUpForm.reset();
               this.loginCard = true;
-              this.toolTip.SuccessMessage(`Usuário criado com sucesso!`)
+              this.toastMessage.SuccessMessage(`Usuário criado com sucesso!`)
             }
           }
         )
       ).subscribe({
         error: (err) => {
-          this.toolTip.ErrorMessage(`Erro ao efetuar cadastro`)
+          this.toastMessage.ErrorMessage(`Erro ao efetuar cadastro`)
           console.log(err);
         }
       });
@@ -100,10 +100,5 @@ export class HomeComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private openToast(sucess: boolean, title: string, details: string): void {
-    if (sucess)
-      this.toolTip.SuccessMessage(`Usuário criado com sucesso!`)
   }
 }

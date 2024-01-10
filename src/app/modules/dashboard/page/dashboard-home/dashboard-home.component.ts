@@ -6,14 +6,14 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 import {ProductsDataTransferService} from "../../../../shared/shared/products/products-data-transfer.service";
 import {Subject, takeUntil} from "rxjs";
 import {ChartData, ChartOptions} from "chart.js";
-import {ToolTipService} from "../../../../services/tool-tip/tool-tip";
+import {ToastMessage} from "../../../../services/toast-message/toast-message";
 
 
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
   styleUrls: [],
-  providers: [ToolTipService]
+  providers: [ToastMessage]
 })
 export class DashboardHomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>()
@@ -24,7 +24,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   constructor(private productsService: ProductsService,
               private messageService: MessageService,
               private productsDataService: ProductsDataTransferService,
-              private toolTip: ToolTipService) {
+              private toastMessage: ToastMessage) {
   }
 
   ngOnInit(): void {
@@ -44,7 +44,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.log(err);
-          this.toolTip.ErrorMessage("Erro ao buscar produtos")
+          this.toastMessage.ErrorMessage("Erro ao buscar produtos")
         }
       });
   }

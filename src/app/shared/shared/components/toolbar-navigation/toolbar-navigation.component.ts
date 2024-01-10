@@ -12,8 +12,7 @@ import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-s
 })
 export class ToolbarNavigationComponent {
 
-  constructor(private cookie: CookieService, private router: Router, private confirmationModal: ConfirmationModal) {
-  }
+  constructor(private confirmationModal: ConfirmationModal) {}
 
   logout(): void {
     this.confirmationModal.confirmLogout("Tem certeza que deseja sair?")

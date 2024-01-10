@@ -14,7 +14,7 @@ import {RippleModule} from "primeng/ripple";
 import {CookieService} from "ngx-cookie-service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
-import {ToolTipService} from "./services/tool-tip/tool-tip";
+import {ToastMessage} from "./services/toast-message/toast-message";
 
 
 @NgModule({
@@ -37,7 +37,7 @@ import {ToolTipService} from "./services/tool-tip/tool-tip";
     ConfirmDialogModule
 
   ],
-  providers: [CookieService, MessageService,ConfirmationService, ToolTipService],
+  providers: [CookieService, MessageService,ConfirmationService, ToastMessage],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

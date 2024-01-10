@@ -14,14 +14,17 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {DialogService, DynamicDialogModule} from "primeng/dynamicdialog";
 import {DropdownModule} from "primeng/dropdown";
-import {TooltipModule} from "primeng/tooltip";
 import {ConfirmationService} from "primeng/api";
+import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
+import {RippleModule} from "primeng/ripple";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 
 
 @NgModule({
   declarations: [
-    CategoriesHomeComponent
+    CategoriesHomeComponent,
+    CategoriesTableComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +42,8 @@ import {ConfirmationService} from "primeng/api";
     InputTextareaModule,
     DynamicDialogModule,
     DropdownModule,
-    TooltipModule
+    RippleModule,
+    ConfirmDialogModule
   ],
   providers : [DialogService, ConfirmationService]
 })

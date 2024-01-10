@@ -12,7 +12,7 @@ import { ProductFormComponent } from './components/product-form/product-form.com
 import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextareaModule} from "primeng/inputtextarea";
-import {ToolTipService} from "../../services/tool-tip/tool-tip";
+import {ToastMessage} from "../../services/toast-message/toast-message";
 
 
 
@@ -43,6 +43,6 @@ import {ToolTipService} from "../../services/tool-tip/tool-tip";
     ToolbarNavigationComponent
   ],
   // exports:[ToolbarNavigationComponent],
-  providers: [DialogService, CurrencyPipe,ToolTipService]
+  providers: [DialogService, CurrencyPipe,ToastMessage]
 })
 export class SharedModule { }

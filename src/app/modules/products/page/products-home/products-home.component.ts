@@ -8,7 +8,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ProductFormComponent} from "../../../../shared/shared/components/product-form/product-form.component";
-import {ToolTipService} from "../../../../services/tool-tip/tool-tip";
+import {ToastMessage} from "../../../../services/toast-message/toast-message";
 import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
 
 
@@ -16,7 +16,7 @@ import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-s
   selector: 'app-products-home',
   templateUrl: './products-home.component.html',
   styleUrls: [],
-  providers: [ToolTipService, ConfirmationModal]
+  providers: [ToastMessage, ConfirmationModal]
 })
 export class ProductsHomeComponent implements OnDestroy, OnInit {
   private readonly destroy$: Subject<void> = new Subject();
@@ -29,7 +29,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     private router: Router,
     private confirmationService: ConfirmationService,
     private dialogService: DialogService,
-    private toolTip: ToolTipService,
+    private toastMessage: ToastMessage,
     private confirmationModal: ConfirmationModal
   ) {
   }
@@ -57,7 +57,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         },
         error: (err) => {
           console.log(err);
-          this.toolTip.ErrorMessage("Erro ao buscar produtos")
+          this.toastMessage.ErrorMessage("Erro ao buscar produtos")
           this.router.navigate(['/dashboard']);
         },
       });
@@ -102,13 +102,13 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         .subscribe({
           next: (response) => {
             if (response) {
-              this.toolTip.SuccessMessage('Produto removido com sucesso!')
+              this.toastMessage.SuccessMessage('Produto removido com sucesso!')
               this.getAPIProductsDatas();
             }
           },
           error: (err) => {
             console.log(err);
-            this.toolTip.ErrorMessage('Erro ao remover produto!')
+            this.toastMessage.ErrorMessage('Erro ao remover produto!')
           },
         });
     }

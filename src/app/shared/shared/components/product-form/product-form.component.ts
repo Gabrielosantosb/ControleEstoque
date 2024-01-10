@@ -14,13 +14,13 @@ import {elements} from "chart.js";
 import {ProductsDataTransferService} from "../../products/products-data-transfer.service";
 import {ProductEvent} from "../../../../modules/products/enums/products/ProductEvent.js";
 import {EditProductRequest} from "../../../../../models/interfaces/products/request/EditProductRequest";
-import {ToolTipService} from "../../../../services/tool-tip/tool-tip";
+import {ToastMessage} from "../../../../services/toast-message/toast-message";
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: [],
-  providers: [ToolTipService]
+  providers: [ToastMessage]
 })
 export class ProductFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
@@ -60,7 +60,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private router: Router,
     public ref: DynamicDialogConfig,
-    private toolTip: ToolTipService,
+    private toastMessage: ToastMessage,
   ) {
   }
 
@@ -103,12 +103,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (response) => {
             if (response) {
-              this.toolTip.SuccessMessage('Produto criado com sucesso!')
+              this.toastMessage.SuccessMessage('Produto criado com sucesso!')
             }
           },
           error: (err) => {
             console.log(err);
-            this.toolTip.ErrorMessage('Erro ao criar produto!')
+            this.toastMessage.ErrorMessage('Erro ao criar produto!')
           },
         });
     }
@@ -136,11 +136,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            this.toolTip.SuccessMessage('Produto editado com sucesso!')
+            this.toastMessage.SuccessMessage('Produto editado com sucesso!')
             this.editProductForm.reset();
           },
           error: (err) => {
-            this.toolTip.ErrorMessage('Erro ao editar produto')
+            this.toastMessage.ErrorMessage('Erro ao editar produto')
             this.editProductForm.reset();
             console.log(err);
           },
