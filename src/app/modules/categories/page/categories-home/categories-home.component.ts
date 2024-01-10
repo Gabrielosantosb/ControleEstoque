@@ -7,12 +7,13 @@ import {Subject, takeUntil} from "rxjs";
 import {GetCategoriesResponse} from "../../../../../models/interfaces/categories/get-categories-service.service";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
 import {Router} from "@angular/router";
+import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
 
 @Component({
   selector: 'app-categories-home',
   templateUrl: './categories-home.component.html',
   styleUrls: ['./categories-home.component.scss'],
-  providers:[ToastMessage]
+  providers: [ToastMessage]
 })
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject()
@@ -22,7 +23,11 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     this.getAllCategories();
   }
 
-  constructor(private router: Router, private categoriesService: CategoriesService, private dialogService: DialogService, private toastMessage: ToastMessage, private confirmationService: ConfirmationService) {
+  constructor(private router: Router,
+              private categoriesService: CategoriesService,
+              private dialogService: DialogService,
+              private toastMessage: ToastMessage,
+              private confirmationModal: ConfirmationModal) {
   }
 
   getAllCategories(): void {

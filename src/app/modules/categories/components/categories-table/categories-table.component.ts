@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {GetCategoriesResponse} from "../../../../../models/interfaces/categories/get-categories-service.service";
+import {EditCategoryAction} from "../../../../../models/interfaces/categories/event/editCategory";
 
 @Component({
   selector: 'app-categories-table',
@@ -8,5 +9,6 @@ import {GetCategoriesResponse} from "../../../../../models/interfaces/categories
 })
 export class CategoriesTableComponent {
   @Input() public categories : Array<GetCategoriesResponse> = []
+  @Output() public categoryEvent = new EventEmitter<EditCategoryAction>()
   public categorySelected!: GetCategoriesResponse
 }
