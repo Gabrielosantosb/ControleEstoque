@@ -54,6 +54,11 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       this.categoriesService.deleteCategory({ category_id }).pipe(takeUntil(this.destroy$)).subscribe({
         next: (response) => {
           this.toastMessage.SuccessMessage('Categoria Removida!')
+          this.getAllCategories();
+        },
+        error:(err) =>{
+          this.toastMessage.ErrorMessage('Erro ao remover categoria')
+          this.getAllCategories();
         }
       });
     }
