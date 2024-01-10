@@ -14,13 +14,13 @@ import {elements} from "chart.js";
 import {ProductsDataTransferService} from "../../products/products-data-transfer.service";
 import {ProductEvent} from "../../../../modules/products/enums/products/ProductEvent.js";
 import {EditProductRequest} from "../../../../../models/interfaces/products/request/EditProductRequest";
-import {ToolTipComponent} from "../tool-tip/tool-tip.component";
+import {ToolTipService} from "../../../../services/tool-tip/tool-tip";
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: [],
-  providers: [ToolTipComponent]
+  providers: [ToolTipService]
 })
 export class ProductFormComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
@@ -60,14 +60,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private router: Router,
     public ref: DynamicDialogConfig,
-    private toolTip: ToolTipComponent,
+    private toolTip: ToolTipService,
   ) {
   }
 
   ngOnInit(): void {
     this.productAction = this.ref.data;
     this.productAction?.event?.action === this.saleProductAction && this.getProductDatas();
-
     this.getAllCategories();
     this.renderDropdown = true
   }
@@ -141,9 +140,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
             this.editProductForm.reset();
           },
           error: (err) => {
-            console.log(err);
             this.toolTip.ErrorMessage('Erro ao editar produto')
             this.editProductForm.reset();
+            console.log(err);
           },
         });
     }

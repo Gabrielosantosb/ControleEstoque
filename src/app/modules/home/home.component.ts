@@ -8,14 +8,15 @@ import {CookieService} from "ngx-cookie-service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {environments} from "../../../environments/environments";
-import {ToolTipComponent} from "../../shared/shared/components/tool-tip/tool-tip.component";
+import {ToolTipService} from "../../services/tool-tip/tool-tip";
+
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [ToolTipComponent]
+  providers: [ToolTipService]
 })
 export class HomeComponent implements OnDestroy {
   loginCard = true;
@@ -39,7 +40,7 @@ export class HomeComponent implements OnDestroy {
               private cookieService: CookieService,
               private messageService: MessageService,
               private router: Router,
-              private toolTip: ToolTipComponent) {
+              private toolTip: ToolTipService) {
   }
 
   clearErrorMessage(): void {

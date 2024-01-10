@@ -8,13 +8,14 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ProductFormComponent} from "../../../../shared/shared/components/product-form/product-form.component";
-import {ToolTipComponent} from "../../../../shared/shared/components/tool-tip/tool-tip.component";
+import {ToolTipService} from "../../../../services/tool-tip/tool-tip";
+
 
 @Component({
   selector: 'app-products-home',
   templateUrl: './products-home.component.html',
   styleUrls: [],
-  providers: [ToolTipComponent]
+  providers: [ToolTipService]
 })
 export class ProductsHomeComponent implements OnDestroy, OnInit {
   private readonly destroy$: Subject<void> = new Subject();
@@ -27,7 +28,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     private router: Router,
     private confirmationService: ConfirmationService,
     private dialogService: DialogService,
-    private toolTip : ToolTipComponent
+    private toolTip : ToolTipService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +37,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
 
   getServiceProductsDatas() {
     const productsLoaded = this.productsDtService.getProductsData();
-
     if (productsLoaded.length > 0) {
       this.productsDatas = productsLoaded;
     } else this.getAPIProductsDatas();

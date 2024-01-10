@@ -12,7 +12,9 @@ import { ProductFormComponent } from './components/product-form/product-form.com
 import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextareaModule} from "primeng/inputtextarea";
-import {ConfirmationService, MessageService} from "primeng/api";
+import {ToolTipService} from "../../services/tool-tip/tool-tip";
+
+
 
 
 
@@ -21,6 +23,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
   declarations: [
     ToolbarNavigationComponent,
     ProductFormComponent,
+
   ],
     imports: [
         CommonModule,
@@ -40,6 +43,6 @@ import {ConfirmationService, MessageService} from "primeng/api";
     ToolbarNavigationComponent
   ],
   // exports:[ToolbarNavigationComponent],
-  providers: [DialogService, CurrencyPipe]
+  providers: [DialogService, CurrencyPipe,ToolTipService]
 })
 export class SharedModule { }

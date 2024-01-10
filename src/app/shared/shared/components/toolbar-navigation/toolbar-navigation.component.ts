@@ -2,27 +2,20 @@ import {Component} from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
 
 @Component({
   selector: 'app-toolbar-navigation',
   templateUrl: './toolbar-navigation.component.html',
-  styleUrls: []
+  styleUrls: [],
+  providers:[ConfirmationModal]
 })
 export class ToolbarNavigationComponent {
 
-  constructor(private cookie: CookieService, private router: Router, private confirmationService: ConfirmationService) {
+  constructor(private cookie: CookieService, private router: Router, private confirmationModal: ConfirmationModal) {
   }
 
   logout(): void {
-    this.confirmationService.confirm({
-      message: "Tem certeza que deseja sair?",
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Sim',
-      rejectLabel: 'Não',
-      accept: () => {
-        this.cookie.delete("USER_INFO")
-        void this.router.navigate(["/home"])
-      }
-    })
+    this.confirmationModal.confirmLogout("Tem certeza que deseja sair?")
   }
 }
