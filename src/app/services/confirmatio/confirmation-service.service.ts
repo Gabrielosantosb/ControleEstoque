@@ -24,7 +24,16 @@ export class ConfirmationModal {
         void this.router.navigate(["home"])
       }
     })
-
   }
-
+  confirmDelete(message: string, deleteProduct: () => void): void {
+    this.confirmationService.confirm({
+      message: message,
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        deleteProduct()
+      }
+    })
+  }
 }

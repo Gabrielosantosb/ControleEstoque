@@ -9,13 +9,14 @@ import {EventAction} from "../../../../../models/interfaces/products/event/Event
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ProductFormComponent} from "../../../../shared/shared/components/product-form/product-form.component";
 import {ToolTipService} from "../../../../services/tool-tip/tool-tip";
+import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
 
 
 @Component({
   selector: 'app-products-home',
   templateUrl: './products-home.component.html',
   styleUrls: [],
-  providers: [ToolTipService]
+  providers: [ToolTipService, ConfirmationModal]
 })
 export class ProductsHomeComponent implements OnDestroy, OnInit {
   private readonly destroy$: Subject<void> = new Subject();
@@ -28,8 +29,10 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     private router: Router,
     private confirmationService: ConfirmationService,
     private dialogService: DialogService,
-    private toolTip : ToolTipService
-  ) {}
+    private toolTip: ToolTipService,
+    private confirmationModal: ConfirmationModal
+  ) {
+  }
 
   ngOnInit(): void {
     this.getServiceProductsDatas();
@@ -54,7 +57,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         },
         error: (err) => {
           console.log(err);
-        this.toolTip.ErrorMessage("Erro ao buscar produtos")
+          this.toolTip.ErrorMessage("Erro ao buscar produtos")
           this.router.navigate(['/dashboard']);
         },
       });
@@ -65,7 +68,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
       this.ref = this.dialogService.open(ProductFormComponent, {
         header: event?.action,
         width: '70%',
-        contentStyle: { overflow: 'auto' },
+        contentStyle: {overflow: 'auto'},
         baseZIndex: 10000,
         maximizable: true,
         data: {
@@ -84,14 +87,10 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     productName: string;
   }): void {
     if (event) {
-      this.confirmationService.confirm({
-        message: `Confirma a exclusão do produto: ${event?.productName}?`,
-        header: 'Confirmação de exclusão',
-        icon: 'pi pi-exclamation-triangle',
-        acceptLabel: 'Sim',
-        rejectLabel: 'Não',
-        accept: () => this.deleteProduct(event?.product_id),
-      });
+      this.confirmationModal.confirmDelete(`Confirma a exclusão do produto: ${event?.productName}?`, () => {
+        this.deleteProduct(event?.product_id)
+      })
+
     }
   }
 
