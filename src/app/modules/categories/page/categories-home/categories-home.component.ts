@@ -8,6 +8,7 @@ import {GetCategoriesResponse} from "../../../../../models/interfaces/categories
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
 import {Router} from "@angular/router";
 import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
+import {DeleteCategory} from "../../../../../models/interfaces/categories/event/deleteCategory";
 
 @Component({
   selector: 'app-categories-home',
@@ -44,6 +45,19 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     )
   }
 
+  handleDeleteCategory(event: DeleteCategory):void{
+    if(event) this.confirmationModal.confirmDelete(`Deseja excluir a categoria ${event.categoryName}?`, () => this.deleteCategory(event.category_id));
+  }
+
+  deleteCategory(category_id: string): void {
+    if (category_id) {
+      this.categoriesService.deleteCategory({ category_id }).pipe(takeUntil(this.destroy$)).subscribe({
+        next: (response) => {
+          this.toastMessage.SuccessMessage('Categoria Removida!')
+        }
+      });
+    }
+  }
   ngOnDestroy() {
     this.destroy$.next()
     this.destroy$.complete()

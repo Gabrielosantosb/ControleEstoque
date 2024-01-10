@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {GetCategoriesResponse} from "../../../../../models/interfaces/categories/get-categories-service.service";
 import {EditCategoryAction} from "../../../../../models/interfaces/categories/event/editCategory";
+import {CategoryEvent} from "../../../../../models/interfaces/enums/categories/CategoryEvent";
+import {DeleteCategory} from "../../../../../models/interfaces/categories/event/deleteCategory";
 
 @Component({
   selector: 'app-categories-table',
@@ -10,5 +12,12 @@ import {EditCategoryAction} from "../../../../../models/interfaces/categories/ev
 export class CategoriesTableComponent {
   @Input() public categories : Array<GetCategoriesResponse> = []
   @Output() public categoryEvent = new EventEmitter<EditCategoryAction>()
+  @Output() public deleteCategory = new EventEmitter<DeleteCategory>()
   public categorySelected!: GetCategoriesResponse
+  public addCategoryAction = CategoryEvent.ADD_CATEGORY_ACTION
+  public editCategoryAction = CategoryEvent.EDIT_CATEGORY_ACTION
+
+  handleDeleteCategory(category_id: string, categoryName: string){
+    if(category_id !== '' && categoryName !== '') this.deleteCategory.emit({category_id,  categoryName})
+  }
 }
