@@ -1,7 +1,7 @@
 import {Input, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {SharedModule} from "../../shared/shared/shared.module";
+
 import {HttpClientModule} from "@angular/common/http";
 import {CardModule} from "primeng/card";
 import {ButtonModule} from "primeng/button";
@@ -22,7 +22,7 @@ import {RouterModule} from "@angular/router";
 import {PRODUCTS_ROUTES} from "./products.routing";
 import { ProductsTableComponent } from './components/products-table/products-table.component';
 import {RippleModule} from "primeng/ripple";
-
+import {SharedModule} from "../../shared/shared.module";
 
 
 @NgModule({

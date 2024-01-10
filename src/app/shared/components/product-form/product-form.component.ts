@@ -1,20 +1,20 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, take, takeUntil} from "rxjs";
-import {CategoriesService} from "../../../../services/categories/categories.service";
+import {CategoriesService} from "../../../services/categories/categories.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
-import {GetCategoriesResponse} from "../../../../../models/interfaces/categories/get-categories-service.service";
-import {CreateProductRequest} from "../../../../../models/interfaces/products/request/CreateProductRequest";
-import {ProductsService} from "../../../../services/products/products.service";
+import {GetCategoriesResponse} from "../../../../models/interfaces/categories/get-categories-service.service";
+import {CreateProductRequest} from "../../../../models/interfaces/products/request/CreateProductRequest";
+import {ProductsService} from "../../../services/products/products.service";
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
-import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
-import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
+import {EventAction} from "../../../../models/interfaces/products/event/EventAction";
+import {GetAllProductsResponse} from "../../../../models/interfaces/products/response/GetAllProductsResponse";
 import {elements} from "chart.js";
 import {ProductsDataTransferService} from "../../products/products-data-transfer.service";
-import {ProductEvent} from "../../../../modules/products/enums/products/ProductEvent.js";
-import {EditProductRequest} from "../../../../../models/interfaces/products/request/EditProductRequest";
-import {ToastMessage} from "../../../../services/toast-message/toast-message";
+import {ProductEvent} from "../../../../models/interfaces/enums/products/ProductEvent.js";
+import {EditProductRequest} from "../../../../models/interfaces/products/request/EditProductRequest";
+import {ToastMessage} from "../../../services/toast-message/toast-message";
 
 @Component({
   selector: 'app-product-form',

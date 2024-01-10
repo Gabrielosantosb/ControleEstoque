@@ -12,7 +12,8 @@ import { ProductFormComponent } from './components/product-form/product-form.com
 import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextareaModule} from "primeng/inputtextarea";
-import {ToastMessage} from "../../services/toast-message/toast-message";
+import {ToastMessage} from "../services/toast-message/toast-message";
+
 
 
 

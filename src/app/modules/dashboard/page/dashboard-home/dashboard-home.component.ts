@@ -3,7 +3,7 @@ import {ProductsService} from "../../../../services/products/products.service";
 import {MessageService} from "primeng/api";
 import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
 import {error} from "@angular/compiler-cli/src/transformers/util";
-import {ProductsDataTransferService} from "../../../../shared/shared/products/products-data-transfer.service";
+import {ProductsDataTransferService} from "../../../../shared/products/products-data-transfer.service";
 import {Subject, takeUntil} from "rxjs";
 import {ChartData, ChartOptions} from "chart.js";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
@@ -11,7 +11,7 @@ import {ToastMessage} from "../../../../services/toast-message/toast-message";
 
 @Component({
   selector: 'app-dashboard-home',
-  templateUrl: './dashboard-home.component.html',
+  templateUrl: 'dashboard-home.component.html',
   styleUrls: [],
   providers: [ToastMessage]
 })

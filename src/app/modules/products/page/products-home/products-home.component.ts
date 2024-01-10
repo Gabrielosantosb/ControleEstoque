@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {ProductsService} from "../../../../services/products/products.service";
-import {ProductsDataTransferService} from "../../../../shared/shared/products/products-data-transfer.service";
+import {ProductsDataTransferService} from "../../../../shared/products/products-data-transfer.service";
 import {Router} from "@angular/router";
 import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ProductFormComponent} from "../../../../shared/shared/components/product-form/product-form.component";
+import {ProductFormComponent} from "../../../../shared/components/product-form/product-form.component";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
 import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
 

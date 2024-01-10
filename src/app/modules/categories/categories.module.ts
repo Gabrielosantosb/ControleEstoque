@@ -4,7 +4,7 @@ import { CategoriesHomeComponent } from './page/categories-home/categories-home.
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {CATEGORIES_ROTES} from "./categories.routing";
-import {SharedModule} from "../../shared/shared/shared.module";
+import {SharedModule} from "../../shared/shared.module";
 import {HttpClientModule} from "@angular/common/http";
 import {CardModule} from "primeng/card";
 import {ButtonModule} from "primeng/button";

@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
+import {ConfirmationModal} from "../../../services/confirmatio/confirmation-service.service";
+
 
 @Component({
   selector: 'app-toolbar-navigation',
