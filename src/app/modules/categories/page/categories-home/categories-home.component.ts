@@ -9,6 +9,7 @@ import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-s
 import {DeleteCategory} from "../../../../../models/interfaces/categories/event/deleteCategory";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {CategoryFormComponent} from "../../components/category-form/category-form/category-form.component";
+import {ProductsDataTransferService} from "../../../../shared/products/products-data-transfer.service";
 
 @Component({
   selector: 'app-categories-home',
@@ -20,9 +21,11 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   private ref!: DynamicDialogRef;
   public categoriesData: Array<GetCategoriesResponse> = [];
+  public productsData = []
 
   constructor(
     private categoriesService: CategoriesService,
+    private productsDtService: ProductsDataTransferService,
     private dialogService: DialogService,
     private toastMessage: ToastMessage,
     private confirmationModal: ConfirmationModal,
@@ -41,6 +44,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.length > 0) {
+
             this.categoriesData = response;
           }
         },
@@ -53,12 +57,15 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteCategoryAction(event: DeleteCategory): void {
-    if (event && event.categoryName !== 'Macbooks' && event.categoryName !== 'Notebooks')
-      this.confirmationModal.confirmDelete(`Confirma a exclusão da categoria: ${event?.categoryName}`,
-        () => this.deleteCategory(event?.category_id));
-
-    this.toastMessage.ErrorMessage(`Não é possível excluir a categoria ${event.categoryName}`);
-
+    if (event && event.categoryName !== 'Macbooks' && event.categoryName !== 'Notebooks') {
+      if (this.isCategoryUsed(event.category_id)) {
+        this.toastMessage.ErrorMessage(`Não é possível excluir a categoria ${event.categoryName}, pois ela está associada a um produto`);
+      } else {
+        this.confirmationModal.confirmDelete(`Confirma a exclusão da categoria: ${event?.categoryName}`, () => this.deleteCategory(event?.category_id));
+      }
+    } else {
+      this.toastMessage.ErrorMessage(`Não é possível excluir a categoria ${event.categoryName}`);
+    }
   }
 
   deleteCategory(category_id: string): void {
@@ -99,6 +106,11 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
         next: () => this.getAllCategories(),
       });
     }
+  }
+
+  private isCategoryUsed(category_id: string): boolean {
+    let productsData = this.productsDtService.getProductsData()
+    return productsData.some(product => product.category.id === category_id);
   }
 
   ngOnDestroy(): void {

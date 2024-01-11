@@ -4,7 +4,7 @@ import {ProductsService} from "../../../../services/products/products.service";
 import {ProductsDataTransferService} from "../../../../shared/products/products-data-transfer.service";
 import {Router} from "@angular/router";
 import {GetAllProductsResponse} from "../../../../../models/interfaces/products/response/GetAllProductsResponse";
-import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmationService} from "primeng/api";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ProductFormComponent} from "../../components/product-form/product-form.component";
@@ -53,6 +53,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         next: (response) => {
           if (response.length > 0) {
             this.productsDatas = response;
+            this.productsDtService.setProductsDatas(response);
           }
         },
         error: (err) => {
