@@ -10,18 +10,20 @@ import {DeleteCategory} from "../../../../../models/interfaces/categories/event/
   styleUrls: ['./categories-table.component.scss']
 })
 export class CategoriesTableComponent {
-  @Input() public categories : Array<GetCategoriesResponse> = []
-  @Output() public categoryEvent = new EventEmitter<EditCategoryAction>()
-  @Output() public deleteCategoryEvent = new EventEmitter<DeleteCategory>()
-  public categorySelected!: GetCategoriesResponse
-  public addCategoryAction = CategoryEvent.ADD_CATEGORY_ACTION
-  public editCategoryAction = CategoryEvent.EDIT_CATEGORY_ACTION
+  @Input() public categories: Array<GetCategoriesResponse> = [];
+  @Output() public categoryEvent = new EventEmitter<EditCategoryAction>();
+  @Output() public deleteCategoryEvent = new EventEmitter<DeleteCategory>();
+  public categorySelected!: GetCategoriesResponse;
+  public addCategoryAction = CategoryEvent.ADD_CATEGORY_ACTION;
+  public editCategoryAction = CategoryEvent.EDIT_CATEGORY_ACTION;
 
-  handleDeleteCategoryEvent(category_id: string, categoryName: string){
-    if(category_id !== '' && categoryName !== '') this.deleteCategoryEvent.emit({category_id,  categoryName})
+  handleDeleteCategoryEvent(category_id: string, categoryName: string): void {
+    if (category_id !== '' && categoryName !== '') {
+      this.deleteCategoryEvent.emit({ category_id, categoryName });
+    }
   }
 
-  handleAddCategoryEvent(action: string, categoryName?: string, id?:string):void{
-    if(action && action !== '') this.categoryEvent.emit({action, categoryName, id})
+  handleCategoryEvent(action: string, id?: string, categoryName?: string): void {
+    if (action && action !== '') this.categoryEvent.emit({ action, id, categoryName });
   }
 }

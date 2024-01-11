@@ -36,6 +36,14 @@ export class CategoriesService {
     );
   }
 
+  editCategory(requestData: { category_id: string, name: string }): Observable<void> {
+    return this.http.put<void>(
+      `${this.API_URL}/category/edit`,
+      { name: requestData.name },
+      { ...this.httpOptions, params: { category_id: requestData.category_id } }
+    );
+  }
+
 
   deleteCategory(requestData: { category_id: string }): Observable<void> {
     return this.http.delete<void>(

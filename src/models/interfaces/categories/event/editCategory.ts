@@ -1,6 +1,6 @@
 export interface EditCategoryAction{
-  id?: string
   action: string
+  id?: string
   categoryName?: string
 
 }

@@ -35,12 +35,12 @@
               </div>
             </th>
             <th>
-              <div class ="flex justify-content-center">
+              <div class="flex justify-content-center">
                 <p-button
-                styleClass="p-button-info"
-                icon = 'pi pi-plus'
-                label = 'Adicionar'
-                (onClick)="handleAddCategoryEvent(addCategoryAction)"
+                  styleClass="p-button-info"
+                  icon='pi pi-plus'
+                  label='Adicionar'
+                  (onClick)="handleCategoryEvent(addCategoryAction)"
                 ></p-button>
               </div>
             </th>
@@ -50,18 +50,23 @@
           <tr>
             <td>{{category?.name}}</td>
             <td>
-              <div class ='flex justify-content-center gap-3 align-content-center align-items-center'>
+              <div class='flex justify-content-center gap-3 align-content-center align-items-center'>
                 <button
                   pButton
                   pRipple
-                  icon = 'pi pi-pencil'
-                  class = "p-button-rounded p-button-warning"
+                  pTooltip = 'Editar Categoria'
+                  tooltipPosition="top"
+                  icon='pi pi-pencil'
+                  class="p-button-rounded p-button-warning"
+                  (click)="handleCategoryEvent(editCategoryAction, category?.id, category?.name)"
                 ></button>
                 <button
                   pButton
                   pRipple
-                  icon = 'pi pi-trash'
-                  class = "p-button-rounded p-button-danger"
+                  pTooltip = 'Excluir Categoria'
+                  tooltipPosition="top"
+                  icon='pi pi-trash'
+                  class="p-button-rounded p-button-danger"
                   (click)="handleDeleteCategoryEvent(category?.id, category?.name)"
                 ></button>
               </div>

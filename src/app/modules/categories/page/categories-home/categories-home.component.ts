@@ -1,8 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CategoriesService} from "../../../../services/categories/categories.service";
-import {Dialog} from "primeng/dialog";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ConfirmationService, MessageService} from "primeng/api";
 import {Subject, takeUntil} from "rxjs";
 import {GetCategoriesResponse} from "../../../../../models/interfaces/categories/get-categories-service.service";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
@@ -11,7 +9,6 @@ import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-s
 import {DeleteCategory} from "../../../../../models/interfaces/categories/event/deleteCategory";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {CategoryFormComponent} from "../../components/category-form/category-form/category-form.component";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-categories-home',
@@ -20,77 +17,92 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
   providers: [ToastMessage, ConfirmationModal]
 })
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
-  private readonly destroy$: Subject<void> = new Subject()
-  public categoriesData: Array<GetCategoriesResponse> = []
-  private ref !: DynamicDialogRef
+  private readonly destroy$: Subject<void> = new Subject();
+  private ref!: DynamicDialogRef;
+  public categoriesDatas: Array<GetCategoriesResponse> = [];
 
-  ngOnInit() {
+  constructor(
+    private categoriesService: CategoriesService,
+    private dialogService: DialogService,
+    private toastMessage: ToastMessage,
+    private confirmationModal: ConfirmationModal,
+    private router: Router
+  ) {
+  }
+
+  ngOnInit(): void {
     this.getAllCategories();
   }
 
-  constructor(private router: Router,
-              private categoriesService: CategoriesService,
-              private dialogService: DialogService,
-              private toastMessage: ToastMessage,
-              private confirmationService: ConfirmationService,
-              private confirmationModal: ConfirmationModal) {
-  }
-
-  getAllCategories(): void {
-    this.categoriesService.getAllCategories().pipe(takeUntil(this.destroy$)).subscribe({
+  getAllCategories() {
+    this.categoriesService
+      .getAllCategories()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
         next: (response) => {
-          if (response.length > 0) this.categoriesData = response
+          if (response.length > 0) {
+            this.categoriesDatas = response;
+          }
         },
         error: (err) => {
-          console.log(err)
-          this.toastMessage.ErrorMessage('Erro ao buscar categorias')
-          this.router.navigate(['/dashboard'])
-        }
-      }
-    )
+          console.log(err);
+          this.toastMessage.ErrorMessage('Erro ao buscar categorias!')
+          this.router.navigate(['/dashboard']);
+        },
+      });
   }
 
-  handleDeleteCategory(event: DeleteCategory): void {
+  handleDeleteCategoryAction(event: DeleteCategory): void {
     if (event) {
-      this.confirmationModal.confirmDelete(`Certeza que deseja deletar a categoria ${event.categoryName}?`,
-        () => this.deleteCategory(event.category_id))
+      this.confirmationModal.confirmDelete(`Confirma a exclusão da categoria: ${event?.categoryName}`, () => this.deleteCategory(event?.category_id))
+
     }
   }
 
   deleteCategory(category_id: string): void {
-    console.log('aqui', category_id)
     if (category_id) {
-      this.categoriesService.deleteCategory({category_id}).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (response) => {
-          this.toastMessage.SuccessMessage('Categoria Removida!')
-          this.getAllCategories();
-        },
-        error: (err) => {
-          this.toastMessage.ErrorMessage('Erro ao remover categoria')
-          this.getAllCategories();
-        }
-      });
+      this.categoriesService
+        .deleteCategory({category_id})
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.getAllCategories();
+            this.toastMessage.SuccessMessage('Categoria removida com sucesso!')
+          },
+          error: (err) => {
+            console.log(err);
+            this.getAllCategories();
+            this.toastMessage.ErrorMessage('Erro ao remover categoria!')
+          },
+        });
+
+      this.getAllCategories();
     }
   }
 
   handleCategoryAction(event: EventAction): void {
-    if (event) this.ref = this.dialogService.open(CategoryFormComponent, {
-      header: event.action,
-      width: '70%',
-      contentStyle: {overflow: 'auto'},
-      baseZIndex: 10000,
-      data: {
-        event: event
-      }
-    }),
+    if (event) {
+      this.ref = this.dialogService.open(CategoryFormComponent, {
+        header: event?.action,
+        width: '70%',
+        contentStyle: {overflow: 'auto'},
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+        },
+      });
+
       this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
-        next: () => this.getAllCategories()
-      })
+        next: () => this.getAllCategories(),
+      });
+    }
   }
 
-  ngOnDestroy() {
-    this.destroy$.next()
-    this.destroy$.complete()
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
+
 
