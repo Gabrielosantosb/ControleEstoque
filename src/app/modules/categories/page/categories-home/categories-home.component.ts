@@ -19,7 +19,7 @@ import {CategoryFormComponent} from "../../components/category-form/category-for
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   private ref!: DynamicDialogRef;
-  public categoriesDatas: Array<GetCategoriesResponse> = [];
+  public categoriesData: Array<GetCategoriesResponse> = [];
 
   constructor(
     private categoriesService: CategoriesService,
@@ -41,7 +41,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.length > 0) {
-            this.categoriesDatas = response;
+            this.categoriesData = response;
           }
         },
         error: (err) => {
