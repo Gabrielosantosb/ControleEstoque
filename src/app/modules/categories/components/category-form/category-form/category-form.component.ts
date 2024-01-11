@@ -50,7 +50,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       })
     }
   }
-
   ngOnInit(): void {
   }
 

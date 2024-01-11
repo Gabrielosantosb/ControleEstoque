@@ -82,15 +82,11 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     }
   }
 
-  handleDeleteProductAction(event: {
-    product_id: string;
-    productName: string;
-  }): void {
+  handleDeleteProductAction(event: { product_id: string; productName: string; }): void {
     if (event) {
       this.confirmationModal.confirmDelete(`Confirma a exclusão do produto: ${event?.productName}?`, () => {
         this.deleteProduct(event?.product_id)
       })
-
     }
   }
 

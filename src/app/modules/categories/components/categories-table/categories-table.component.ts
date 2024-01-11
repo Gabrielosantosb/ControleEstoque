@@ -21,7 +21,7 @@ export class CategoriesTableComponent {
     if(category_id !== '' && categoryName !== '') this.deleteCategoryEvent.emit({category_id,  categoryName})
   }
 
-  handleCategoryEvent(action: string, categoryName?: string, id?:string):void{
+  handleAddCategoryEvent(action: string, categoryName?: string, id?:string):void{
     if(action && action !== '') this.categoryEvent.emit({action, categoryName, id})
   }
 }
