@@ -53,10 +53,12 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
   }
 
   handleDeleteCategoryAction(event: DeleteCategory): void {
-    if (event) {
-      this.confirmationModal.confirmDelete(`Confirma a exclusão da categoria: ${event?.categoryName}`, () => this.deleteCategory(event?.category_id))
+    if (event && event.categoryName !== 'Macbooks' && event.categoryName !== 'Notebooks')
+      this.confirmationModal.confirmDelete(`Confirma a exclusão da categoria: ${event?.categoryName}`,
+        () => this.deleteCategory(event?.category_id));
 
-    }
+    this.toastMessage.ErrorMessage(`Não é possível excluir a categoria ${event.categoryName}`);
+
   }
 
   deleteCategory(category_id: string): void {
