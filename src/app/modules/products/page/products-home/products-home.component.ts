@@ -7,7 +7,7 @@ import {GetAllProductsResponse} from "../../../../../models/interfaces/products/
 import {ConfirmationService, MessageService} from "primeng/api";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ProductFormComponent} from "../../../../shared/components/product-form/product-form.component";
+import {ProductFormComponent} from "../../components/product-form/product-form.component";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
 import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
 

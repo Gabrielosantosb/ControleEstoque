@@ -18,13 +18,16 @@ import {ConfirmationService} from "primeng/api";
 import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import {RippleModule} from "primeng/ripple";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import { CategoryFormComponent } from './components/category-form/category-form/category-form.component';
+import {InputTextModule} from "primeng/inputtext";
 
 
 
 @NgModule({
   declarations: [
     CategoriesHomeComponent,
-    CategoriesTableComponent
+    CategoriesTableComponent,
+    CategoryFormComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +46,8 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     DynamicDialogModule,
     DropdownModule,
     RippleModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputTextModule
   ],
   providers : [DialogService, ConfirmationService]
 })

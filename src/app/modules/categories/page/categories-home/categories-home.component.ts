@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CategoriesService} from "../../../../services/categories/categories.service";
 import {Dialog} from "primeng/dialog";
-import {DialogService} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {Subject, takeUntil} from "rxjs";
 import {GetCategoriesResponse} from "../../../../../models/interfaces/categories/get-categories-service.service";
@@ -9,6 +9,9 @@ import {ToastMessage} from "../../../../services/toast-message/toast-message";
 import {Router} from "@angular/router";
 import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
 import {DeleteCategory} from "../../../../../models/interfaces/categories/event/deleteCategory";
+import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
+import {CategoryFormComponent} from "../../components/category-form/category-form/category-form.component";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-categories-home',
@@ -19,6 +22,7 @@ import {DeleteCategory} from "../../../../../models/interfaces/categories/event/
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject()
   public categoriesData: Array<GetCategoriesResponse> = []
+  private ref !: DynamicDialogRef
 
   ngOnInit() {
     this.getAllCategories();
@@ -49,6 +53,8 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     if(event) this.confirmationModal.confirmDelete(`Deseja excluir a categoria ${event.categoryName}?`, () => this.deleteCategory(event?.category_id));
   }
 
+
+
   deleteCategory(category_id: string): void {
     console.log('aqui', category_id)
     if (category_id) {
@@ -63,6 +69,20 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+  handleCategoryAction(event: EventAction): void{
+    if(event) this.ref = this.dialogService.open(CategoryFormComponent,{
+      header: event.action,
+      width: '70%',
+      contentStyle:{overflow: 'auto'},
+      baseZIndex : 10000,
+      data:{
+        event: event
+      }
+    }),
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getAllCategories()
+      })
   }
   ngOnDestroy() {
     this.destroy$.next()

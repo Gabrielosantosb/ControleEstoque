@@ -10,7 +10,8 @@ import {GetCategoriesResponse} from "../../../models/interfaces/categories/get-c
 })
 export class CategoriesService {
   private API_URL = environments.API_URL;
-  private token = this.cookie.get("USER_INFO")
+  private readonly USER_AUTH = environments.COOKIES_VALUE.user_auth
+  private token = this.cookie.get(this.USER_AUTH)
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -18,8 +19,7 @@ export class CategoriesService {
     })
   }
 
-  constructor(private http: HttpClient, private cookie: CookieService) {
-  }
+  constructor(private http: HttpClient, private cookie: CookieService) {}
 
   getAllCategories(): Observable<Array<GetCategoriesResponse>> {
     return this.http.get<Array<GetCategoriesResponse>>(
@@ -27,6 +27,15 @@ export class CategoriesService {
       this.httpOptions
     )
   }
+
+  createCategory(requestData: { name: string }): Observable<Array<GetCategoriesResponse>> {
+    return this.http.post<Array<GetCategoriesResponse>>(
+      `${this.API_URL}/category`,
+      requestData,
+      this.httpOptions
+    );
+  }
+
 
   deleteCategory(requestData: { category_id: string }): Observable<void> {
     return this.http.delete<void>(
