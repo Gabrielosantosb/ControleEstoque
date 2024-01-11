@@ -25,16 +25,15 @@ export class ConfirmationModal {
       }
     })
   }
-  confirmDelete(message: string, deleteAction: ()=> void): void {
+  confirmDelete(message: string, onDelete: () => void): void {
     this.confirmationService.confirm({
       message: message,
       icon: 'pi pi-exclamation-triangle',
       rejectLabel: 'Não',
       acceptLabel: 'Sim',
       accept: () => {
-        console.log("chamou")
-        deleteAction()
+        onDelete();
       }
-    })
+    });
   }
 }
