@@ -13,6 +13,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ToastMessage} from "../services/toast-message/toast-message";
+import { ShortenPipe } from './pipes/shorten/shorten.pipe';
 
 
 
@@ -24,6 +25,7 @@ import {ToastMessage} from "../services/toast-message/toast-message";
   declarations: [
     ToolbarNavigationComponent,
     ProductFormComponent,
+    ShortenPipe,
 
   ],
     imports: [
@@ -41,7 +43,8 @@ import {ToastMessage} from "../services/toast-message/toast-message";
         InputTextareaModule
     ],
   exports: [
-    ToolbarNavigationComponent
+    ToolbarNavigationComponent,
+    ShortenPipe
   ],
   // exports:[ToolbarNavigationComponent],
   providers: [DialogService, CurrencyPipe,ToastMessage]
