@@ -14,6 +14,7 @@ import {ProductsDataTransferService} from "../../../../shared/products/products-
 import {ProductEvent} from "../../../../../models/interfaces/enums/products/ProductEvent.js";
 import {EditProductRequest} from "../../../../../models/interfaces/products/request/EditProductRequest";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
+import {SaleProductRequest} from "../../../../../models/interfaces/products/request/SaleProductRequest";
 
 @Component({
   selector: 'app-product-form',
@@ -45,11 +46,16 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     amount: [0, Validators.required],
     category_id: ['', Validators.required],
   });
+  public saleProductForm = this.formBuilder.group({
+    amount: [0, Validators.required],
+    product_id: ["", Validators.required]
+  })
 
   public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
   public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
   public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT;
   public renderDropdown = false
+  public saleProductSelected !: GetAllProductsResponse
 
   constructor(
     private categoriesService: CategoriesService,
@@ -144,6 +150,30 @@ export class ProductFormComponent implements OnInit, OnDestroy {
             console.log(err);
           },
         });
+    }
+  }
+
+  handleSaleProduct(): void {
+    if (this.saleProductForm.valid && this.saleProductForm.value) {
+      const requestData: SaleProductRequest = {
+        amount: Number(this.saleProductForm.value.amount),
+        product_id: String(this.saleProductForm.value.product_id)
+      };
+      this.productsService.saleProduct(requestData).pipe(takeUntil(this.destroy$)).subscribe({
+        next: (response) => {
+          if (response) {
+            this.saleProductForm.reset()
+            this.getProductDatas()
+            this.toastMessage.SuccessMessage('Venda efetuada com sucesso!')
+            this.router.navigate(['/dashboard'])
+          }
+        },
+        error: (err) => {
+          console.log(err)
+          this.saleProductForm.reset()
+          this.toastMessage.ErrorMessage('Error ao efetuar venda')
+        }
+      })
     }
   }
 

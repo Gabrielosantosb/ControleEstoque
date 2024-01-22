@@ -6,7 +6,7 @@ import {CategoriesService} from "../../../../../services/categories/categories.s
 import {CategoryEvent} from "../../../../../../models/interfaces/enums/categories/CategoryEvent";
 import {EditCategoryAction} from "../../../../../../models/interfaces/categories/event/editCategory";
 import {ToastMessage} from "../../../../../services/toast-message/toast-message";
-import {ConfirmationModal} from "../../../../../services/confirmatio/confirmation-service.service";
+import {ConfirmationModal} from "../../../../../services/confirmation/confirmation-service.service";
 
 @Component({
   selector: 'app-category-form',

@@ -9,7 +9,7 @@ import {EventAction} from "../../../../../models/interfaces/products/event/Event
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ProductFormComponent} from "../../components/product-form/product-form.component";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
-import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
+import {ConfirmationModal} from "../../../../services/confirmation/confirmation-service.service";
 
 
 @Component({

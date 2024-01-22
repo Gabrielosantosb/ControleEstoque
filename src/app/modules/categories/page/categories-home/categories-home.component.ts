@@ -5,7 +5,7 @@ import {Subject, takeUntil} from "rxjs";
 import {GetCategoriesResponse} from "../../../../../models/interfaces/categories/get-categories-service.service";
 import {ToastMessage} from "../../../../services/toast-message/toast-message";
 import {Router} from "@angular/router";
-import {ConfirmationModal} from "../../../../services/confirmatio/confirmation-service.service";
+import {ConfirmationModal} from "../../../../services/confirmation/confirmation-service.service";
 import {DeleteCategory} from "../../../../../models/interfaces/categories/event/deleteCategory";
 import {EventAction} from "../../../../../models/interfaces/products/event/EventAction";
 import {CategoryFormComponent} from "../../components/category-form/category-form/category-form.component";
